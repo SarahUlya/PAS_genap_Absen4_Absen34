@@ -74,6 +74,13 @@ public class Countries extends AppCompatActivity {
             }
         });
 
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(Countries.this, Profile.class);
+            }
+        });
+
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<CountryResponse> call = apiService.getAll_countries();
 
