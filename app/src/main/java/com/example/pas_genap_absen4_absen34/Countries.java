@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-public class Notification extends AppCompatActivity {
+public class Countries extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ImageView menu;
-    LinearLayout home,dashboard,notification;
+    LinearLayout english,spanish,countries,profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +25,10 @@ public class Notification extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawerLayout);
         menu = findViewById(R.id.menu);
-        home = findViewById(R.id.home);
-        dashboard = findViewById(R.id.dashboard);
-        notification = findViewById(R.id.notification);
+        spanish = findViewById(R.id.spanish);
+        english = findViewById(R.id.english);
+        countries = findViewById(R.id.countries);
+        profile = findViewById(R.id.profile);
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,20 +37,20 @@ public class Notification extends AppCompatActivity {
 
             }
         });
-        home.setOnClickListener(new View.OnClickListener() {
+        english.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectActivity(Notification.this, MainActivity.class);
+                redirectActivity(Countries.this, MainActivity.class);
 
             }
         });
-        dashboard.setOnClickListener(new View.OnClickListener() {
+        spanish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectActivity(Notification.this, Dashboard.class);
+                redirectActivity(Countries.this, Spanish.class);
             }
         });
-        notification.setOnClickListener(new View.OnClickListener() {
+        countries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 recreate();
