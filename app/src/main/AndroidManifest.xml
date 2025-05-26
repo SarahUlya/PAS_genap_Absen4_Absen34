@@ -22,6 +22,9 @@
             android:name=".Spanish"
             android:exported="false" />
         <activity
+            android:name=".EnglishActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

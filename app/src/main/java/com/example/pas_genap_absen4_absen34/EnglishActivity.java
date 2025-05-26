@@ -23,12 +23,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Countries extends AppCompatActivity {
+public class EnglishActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ImageView menu;
     LinearLayout english,spanish,countries,profile;
     private RecyclerView recyclerView;
-    private CountryAdapter countryAdapter;
+    private TeamAdapter teamAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class Countries extends AppCompatActivity {
         setContentView(R.layout.activity_countries);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        countryAdapter = new CountryAdapter(new ArrayList<>());
-        recyclerView.setAdapter(countryAdapter);
+
+        ChampionTeam();
 
         drawerLayout = findViewById(R.id.drawerLayout);
         menu = findViewById(R.id.menu);
@@ -57,45 +57,24 @@ public class Countries extends AppCompatActivity {
         english.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectActivity(Countries.this, MainActivity.class);
-
+                recreate();
             }
         });
         spanish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redirectActivity(Countries.this, Spanish.class);
+                redirectActivity(EnglishActivity.this, Spanish.class);
             }
         });
         countries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recreate();
-            }
-        });
-
-        ApiService apiService = ApiClient.getRetrofitInstance();
-        Call<CountryResponse> call = apiService.getAll_countries();
-
-        call.enqueue(new Callback<CountryResponse>() {
-            @Override
-            public void onResponse(Call<CountryResponse> call, Response<CountryResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Country> country = response.body().getCountries();
-                    countryAdapter.setCountryList(country); // update data ke adapter
-                } else {
-                    Toast.makeText(Countries.this, "Data kosong / error", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CountryResponse> call, Throwable t) {
-                Toast.makeText(Countries.this, "Gagal: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("ERROR", t.getMessage());
+                redirectActivity(EnglishActivity.this, Countries.class);
             }
         });
 
     }
+
     public static void openDrawer(DrawerLayout drawerLayout){
         drawerLayout.openDrawer(GravityCompat.START);
     }
@@ -111,9 +90,28 @@ public class Countries extends AppCompatActivity {
         activity.finish();
     }
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        closeDrawer(drawerLayout);
+    private void ChampionTeam()
+    {
+        ApiService apiService = ApiClient.getRetrofitInstance();
+        Call<TeamsResponse> call = apiService.getTeamsByLeague("English League Championship");
+
+        call.enqueue(new Callback<TeamsResponse>() {
+            @Override
+            public void onResponse(Call<TeamsResponse> call, Response<TeamsResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Team> teams = response.body().getTeamsByLeague();
+                    teamAdapter = new TeamAdapter(teams);
+                    recyclerView.setAdapter(teamAdapter);
+                } else {
+                    Toast.makeText(EnglishActivity.this, "Gagal ambil data", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TeamsResponse> call, Throwable t) {
+                Toast.makeText(EnglishActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+        });
     }
 }
